@@ -6,14 +6,58 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-
-    <SearchView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/search_view_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:background="@null"
+            android:hint="@string/search_txt"
+            android:inputType="none"
+            android:paddingBottom="8dp"
+            android:paddingStart="16dp"
+            android:paddingTop="10dp"
+            android:textColor="#555"
+            android:textColorHint="#999"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/button_search"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/search_button_bg"
+            android:minHeight="0dp"
+            android:textColor="#555"
+            android:text="@string/find_text"
+            style="?android:attr/borderlessButtonStyle"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button_history"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="#555"
+        android:textSize="16sp"
+        android:background="@drawable/history_button_bg"
+        android:text="@string/history_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
 </android.support.constraint.ConstraintLayout>
