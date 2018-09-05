@@ -15,6 +15,7 @@ import android.widget.TextView
 import android.app.Activity
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
+import io.realm.Realm
 
 
 class MainActivity : AppCompatActivity() {
@@ -39,6 +40,8 @@ class MainActivity : AppCompatActivity() {
             Picasso.with(this).load(items[position].regularUrl).into(img_big)
             grid_images.isEnabled = false
         }
+
+        Realm.init(this)
     }
 
     // Вынес обработчики событий по нажатию в отдельную функцию для компактности и наглядности кода
