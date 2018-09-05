@@ -18,7 +18,7 @@ import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import com.example.stmak.searchimage.model.ImageBD
 import io.realm.Realm
-import io.realm.RealmConfiguration
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -40,10 +40,10 @@ class MainActivity : AppCompatActivity() {
         // P.S. Для подгрузки изображений из интернета я возспользовался библиотекой
         // Picasso, так как она довольно проста в использовании, а данное задание не требует чего-то, с чем
         // мы она не справилась
-        grid_images.setOnItemClickListener { _, _, position, _ ->
+        grid_images_history.setOnItemClickListener { _, _, position, _ ->
             img_big.visibility = View.VISIBLE
             Picasso.with(this).load(items[position].smallUrl).into(img_big)
-            grid_images.isEnabled = false
+            grid_images_history.isEnabled = false
         }
 
         Realm.init(this)
@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         // нашего grid_images. Не совсем верный подход, но для данной ситуации вполне подходит такой метод
         // в связи с упрощением кода и не нужной ресурсозатратности, как если бы я сделал это иначе
         img_big.setOnClickListener {
-            grid_images.isEnabled = true
+            grid_images_history.isEnabled = true
             img_big.visibility = View.INVISIBLE
         }
 
@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
         val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
         items.clear()
-        grid_images.adapter = null
+        grid_images_history.adapter = null
         AndroidNetworking.get("https://api.unsplash.com/search/photos")
                 .addQueryParameter("client_id", "dd867c1e011d5e088cba40b30db92299c48256a424fba6fa19fa931388bc0817")
                 .addQueryParameter("page", "1")
@@ -119,17 +119,16 @@ class MainActivity : AppCompatActivity() {
                         // подставляем соответсвующую картинку из массива. Такой способ мне показался более эффективным
                         for(i in 0..19) {
                             if (i == 0) {
-
                                 writeToBD(Image(response.getJSONArray("results").getJSONObject(i).getJSONObject("urls").getString("thumb"),
                                         response.getJSONArray("results").getJSONObject(i).getJSONObject("urls").getString("small")),
                                         response.getJSONArray("results").getJSONObject(i).getString("id"),
-                                        "datedatedate")
+                                        System.currentTimeMillis().toString())
                             }
                             items.add(items.size, Image(response.getJSONArray("results").getJSONObject(i).getJSONObject("urls").getString("thumb"),
                                     response.getJSONArray("results").getJSONObject(i).getJSONObject("urls").getString("small")))
 
                         }
-                        grid_images.adapter = GridMainAdapter(this@MainActivity, items)
+                        grid_images_history.adapter = GridMainAdapter(this@MainActivity, items)
                     }
 
                     override fun onError(error: ANError) {
@@ -144,6 +143,7 @@ class MainActivity : AppCompatActivity() {
             img.date = date
             img.thumbUrl = image.thumbUrl
             img.smallUrl = image.smallUrl
+            img.word = et_search.text.toString()
         }, {
             // Transaction was a success.
             Log.e("Database", "Data Inserted")

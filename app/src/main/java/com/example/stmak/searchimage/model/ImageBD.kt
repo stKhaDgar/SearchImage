@@ -11,4 +11,5 @@ open class ImageBD : RealmObject() {
     var date: String? = null
     var thumbUrl: String? = null
     var smallUrl: String? = null
+    var word: String? = null
 }
