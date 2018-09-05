@@ -82,7 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Воспользуйтесь поиском :)"
+        android:text="@string/use_search_text"
         android:textColor="#999"
         android:textSize="16sp"
         android:textStyle="italic"
@@ -101,7 +101,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/content_description" />
 
 
 </android.support.constraint.ConstraintLayout>

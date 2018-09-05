@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         onClickListener()
 
-        grid_images.setOnItemClickListener { parent, view, position, id ->
+        grid_images.setOnItemClickListener { _, _, position, _ ->
             img_big.visibility = View.VISIBLE
             Picasso.with(this).load(items[position].regularUrl).into(img_big)
             grid_images.isEnabled = false
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
             img_big.visibility = View.INVISIBLE
         }
 
-        et_search.setOnEditorActionListener( TextView.OnEditorActionListener { v, actionId, event ->
+        et_search.setOnEditorActionListener( TextView.OnEditorActionListener { _, actionId, _ ->
             if(actionId == EditorInfo.IME_ACTION_DONE){
                 use_search_tw.visibility = View.INVISIBLE
                 getImages(et_search.text.toString())

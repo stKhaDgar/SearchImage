@@ -1,5 +1,6 @@
 package com.example.stmak.searchimage
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import android.widget.*
 import com.squareup.picasso.Picasso
 
 
+@Suppress("NAME_SHADOWING")
 class GridMainAdapter(private val mContext: Context, private val items: ArrayList<Image>) : BaseAdapter() {
 
     override fun getCount(): Int {
@@ -22,7 +24,7 @@ class GridMainAdapter(private val mContext: Context, private val items: ArrayLis
         return position.toLong()
     }
 
-    // create a new ImageView for each item referenced by the Adapter
+    @SuppressLint("InflateParams")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var convertView = convertView
         if (convertView == null)
