@@ -71,6 +71,8 @@ class MainActivity : AppCompatActivity() {
 
     // Та самая функция получения картинок при помощи get-запроса.
     private fun getImages(word: String) {
+        loader_animation.visibility = View.VISIBLE
+        loader_animation.playAnimation()
         val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
         items.clear()
@@ -84,6 +86,7 @@ class MainActivity : AppCompatActivity() {
                 .build()
                 .getAsJSONObject(object : JSONObjectRequestListener {
                     override fun onResponse(response: JSONObject) {
+                        loader_animation.visibility = View.INVISIBLE
 
                         // В данном месте я решил сначала вытянуть необходимые мне данные (большой и малый размер картинок) в
                         // тот самый массив картинок, ссылкой на который является глобальная переменная items. В таком случае
@@ -91,7 +94,9 @@ class MainActivity : AppCompatActivity() {
                         // Мы просто передаем в адаптер то, что нам нужно, а там в зависимости от позиции элемента в grid-е
                         // подставляем соответсвующую картинку из массива. Такой способ мне показался более эффективным
                         if(response.getString("total") == "0") {
-                            // TODO:
+                            use_search_tw.text = "К сожалению нам не удалось ничего найти на запрос: \"$word\""
+                            use_search_tw.visibility = View.VISIBLE
+                            return
                         }
                         for(i in 0..19) {
                             items.add(items.size, Image(response.getJSONArray("results").getJSONObject(i).getJSONObject("urls").getString("thumb"),

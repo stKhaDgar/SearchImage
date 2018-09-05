@@ -83,6 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="@string/use_search_text"
+        android:textAlignment="center"
         android:textColor="#999"
         android:textSize="16sp"
         android:textStyle="italic"
@@ -103,6 +104,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="@string/content_description" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loader_animation"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:lottie_rawRes="@raw/loading_animation"
+        app:lottie_loop="true"
+        android:scaleType="centerCrop"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>
