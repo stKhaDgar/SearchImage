@@ -29,7 +29,11 @@ class MainActivity : AppCompatActivity() {
 
         onClickListener()
 
-        // Увеличение картинки по тапу
+        // Увеличение картинки по тапу. Так же стоит заметить, что из нашего массива мы достаем вариант картинки с
+        // лучшим качеством.
+        // P.S. так же стоит заметить, что для подгрузки изображений из интернета я возспользовался библиотекой
+        // Picasso, так как она довольно проста в использовании, а данное задание не требует чего-то, с чем
+        // мы она не справилась
         grid_images.setOnItemClickListener { _, _, position, _ ->
             img_big.visibility = View.VISIBLE
             Picasso.with(this).load(items[position].regularUrl).into(img_big)

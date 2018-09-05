@@ -33,6 +33,9 @@ class GridMainAdapter(private val mContext: Context, private val items: ArrayLis
         val img = convertView!!.findViewById(R.id.item_img) as ImageView
         val urlImg = items[position]
 
+        // Именно здесь происходит то, что я описывал в MainActivity.kt . Выше мы вытянули нашу картинку с различными
+        // размерами и подставляем в метод .load() её в низком варианте качества (thumb) и соответственно подгружаем
+        // при помощи библиотеки Picasso
         Picasso.with(mContext).load(urlImg.thumbUrl).into(img)
 
         return convertView
