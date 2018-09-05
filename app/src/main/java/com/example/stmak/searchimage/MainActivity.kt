@@ -13,14 +13,19 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import android.widget.TextView
 import android.app.Activity
+import android.content.Intent
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
+import com.example.stmak.searchimage.model.ImageBD
 import io.realm.Realm
+import io.realm.RealmConfiguration
 
 
 class MainActivity : AppCompatActivity() {
     // Массив для наших картинок различного размера (маленькие и средние)
     val items = ArrayList<Image>()
+
+    lateinit var realm: Realm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,16 +37,19 @@ class MainActivity : AppCompatActivity() {
 
         // Увеличение картинки по тапу. Так же стоит заметить, что из нашего массива мы достаем вариант картинки с
         // лучшим качеством.
-        // P.S. так же стоит заметить, что для подгрузки изображений из интернета я возспользовался библиотекой
+        // P.S. Для подгрузки изображений из интернета я возспользовался библиотекой
         // Picasso, так как она довольно проста в использовании, а данное задание не требует чего-то, с чем
         // мы она не справилась
         grid_images.setOnItemClickListener { _, _, position, _ ->
             img_big.visibility = View.VISIBLE
-            Picasso.with(this).load(items[position].regularUrl).into(img_big)
+            Picasso.with(this).load(items[position].smallUrl).into(img_big)
             grid_images.isEnabled = false
         }
 
         Realm.init(this)
+//        val config = RealmConfiguration.Builder().name("image.realm").build()
+        realm = Realm.getDefaultInstance()
+
     }
 
     // Вынес обработчики событий по нажатию в отдельную функцию для компактности и наглядности кода
@@ -70,6 +78,10 @@ class MainActivity : AppCompatActivity() {
             }
             false
         })
+
+        button_history.setOnClickListener {
+            startActivity(Intent(this, HistoryActivity::class.java))
+        }
     }
 
     // Та самая функция получения картинок при помощи get-запроса.
@@ -106,6 +118,13 @@ class MainActivity : AppCompatActivity() {
                         // Мы просто передаем в адаптер то, что нам нужно, а там в зависимости от позиции элемента в grid-е
                         // подставляем соответсвующую картинку из массива. Такой способ мне показался более эффективным
                         for(i in 0..19) {
+                            if (i == 0) {
+
+                                writeToBD(Image(response.getJSONArray("results").getJSONObject(i).getJSONObject("urls").getString("thumb"),
+                                        response.getJSONArray("results").getJSONObject(i).getJSONObject("urls").getString("small")),
+                                        response.getJSONArray("results").getJSONObject(i).getString("id"),
+                                        "datedatedate")
+                            }
                             items.add(items.size, Image(response.getJSONArray("results").getJSONObject(i).getJSONObject("urls").getString("thumb"),
                                     response.getJSONArray("results").getJSONObject(i).getJSONObject("urls").getString("small")))
 
@@ -117,5 +136,25 @@ class MainActivity : AppCompatActivity() {
                         Log.e("ErrorTask", error.errorDetail)
                     }
                 })
+    }
+
+    private fun writeToBD(image: Image, id: String, date: String){
+        realm.executeTransactionAsync({ bgRealm ->
+            val img = bgRealm.createObject(ImageBD::class.java, id)
+            img.date = date
+            img.thumbUrl = image.thumbUrl
+            img.smallUrl = image.smallUrl
+        }, {
+            // Transaction was a success.
+            Log.e("Database", "Data Inserted")
+        }, { error ->
+            // Transaction failed and was automatically canceled.
+            Log.e("Database", error.message)
+        })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
     }
 }
