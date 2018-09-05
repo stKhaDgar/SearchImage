@@ -90,6 +90,9 @@ class MainActivity : AppCompatActivity() {
                         // в адаптер нам не придется передавать весь JSONObject и там его обрабатывать, вытягивая нужные данные.
                         // Мы просто передаем в адаптер то, что нам нужно, а там в зависимости от позиции элемента в grid-е
                         // подставляем соответсвующую картинку из массива. Такой способ мне показался более эффективным
+                        if(response.getString("total") == "0") {
+                            // TODO:
+                        }
                         for(i in 0..19) {
                             items.add(items.size, Image(response.getJSONArray("results").getJSONObject(i).getJSONObject("urls").getString("thumb"),
                                     response.getJSONArray("results").getJSONObject(i).getJSONObject("urls").getString("small")))
