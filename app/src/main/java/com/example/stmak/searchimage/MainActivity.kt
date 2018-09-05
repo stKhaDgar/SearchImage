@@ -4,7 +4,6 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
@@ -14,10 +13,12 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import android.widget.TextView
 import android.app.Activity
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 
 
 class MainActivity : AppCompatActivity() {
+    // Массив для наших картинок различного размера (маленькие и средние)
     val items = ArrayList<Image>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 
         onClickListener()
 
+        // Увеличение картинки по тапу
         grid_images.setOnItemClickListener { _, _, position, _ ->
             img_big.visibility = View.VISIBLE
             Picasso.with(this).load(items[position].regularUrl).into(img_big)
@@ -35,17 +37,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Вынес обработчики событий по нажатию в отдельную функцию для компактности и наглядности кода
     private fun onClickListener() {
+        // По нажатию на кнопку ПОИСК выполняется get-запрос, в котором мы получаем наши картинки
         button_search.setOnClickListener {
             use_search_tw.visibility = View.INVISIBLE
             getImages(et_search.text.toString())
         }
 
+        // "Сворачиваем" нашу большую картинку и таким образом возвращаемся на поиск
+        // P.S. "блокировка" приложения позади увеличинной картинки происходит за счёт обычного отключения
+        // нашего grid_images. Не совсем верный подход, но для данной ситуации вполне подходит такой метод
+        // в связи с упрощением кода и не нужной ресурсозатратности, как если бы я сделал это иначе
         img_big.setOnClickListener {
             grid_images.isEnabled = true
             img_big.visibility = View.INVISIBLE
         }
 
+        // Обработчик событий по нажатию клавиши Готово на клавиатуре, после ввода слова в поле
         et_search.setOnEditorActionListener( TextView.OnEditorActionListener { _, actionId, _ ->
             if(actionId == EditorInfo.IME_ACTION_DONE){
                 use_search_tw.visibility = View.INVISIBLE
@@ -56,6 +65,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    // Та самая функция получения картинок при помощи get-запроса.
     private fun getImages(word: String) {
         val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
@@ -70,6 +80,12 @@ class MainActivity : AppCompatActivity() {
                 .build()
                 .getAsJSONObject(object : JSONObjectRequestListener {
                     override fun onResponse(response: JSONObject) {
+
+                        // В данном месте я решил сначала вытянуть необходимые мне данные (большой и малый размер картинок) в
+                        // тот самый массив картинок, ссылкой на который является глобальная переменная items. В таком случае
+                        // в адаптер нам не придется передавать весь JSONObject и там его обрабатывать, вытягивая нужные данные.
+                        // Мы просто передаем в адаптер то, что нам нужно, а там в зависимости от позиции элемента в grid-е
+                        // подставляем соответсвующую картинку из массива. Такой способ мне показался более эффективным
                         for(i in 0..19) {
                             items.add(items.size, Image(response.getJSONArray("results").getJSONObject(i).getJSONObject("urls").getString("thumb"),
                                     response.getJSONArray("results").getJSONObject(i).getJSONObject("urls").getString("small")))
@@ -79,7 +95,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     override fun onError(error: ANError) {
-                        Toast.makeText(this@MainActivity, error.errorDetail, Toast.LENGTH_SHORT).show()
+                        Log.e("ErrorTask", error.errorDetail)
                     }
                 })
     }
