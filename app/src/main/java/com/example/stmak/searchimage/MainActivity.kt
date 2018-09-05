@@ -31,16 +31,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun onClickListener() {
         button_search.setOnClickListener {
-            getImages()
+            getImages(et_search.text.toString())
         }
     }
 
-    private fun getImages() {
+    private fun getImages(word: String) {
         AndroidNetworking.get("https://api.unsplash.com/search/photos")
                 .addQueryParameter("client_id", "dd867c1e011d5e088cba40b30db92299c48256a424fba6fa19fa931388bc0817")
                 .addQueryParameter("page", "1")
                 .addQueryParameter("per_page", "10")
-                .addQueryParameter("query", "cat")
+                .addQueryParameter("query", word)
                 .setPriority(Priority.HIGH)
                 .build()
                 .getAsJSONObject(object : JSONObjectRequestListener {
