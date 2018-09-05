@@ -50,6 +50,7 @@
     </LinearLayout>
 
     <GridView
+        android:id="@+id/grid_images"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:numColumns="2"

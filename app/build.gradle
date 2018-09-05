@@ -31,5 +31,9 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+    // Либа для запросов
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
+
+    // Для подгрузки изображений по url
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 }
