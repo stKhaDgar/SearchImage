@@ -53,6 +53,7 @@
         android:id="@+id/grid_images"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginEnd="5dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
@@ -66,13 +67,39 @@
         android:id="@+id/button_history"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="#555"
-        android:textSize="16sp"
         android:background="@drawable/history_button_bg"
         android:text="@string/history_text"
+        android:textColor="#555"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/use_search_tw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Воспользуйтесь поиском :)"
+        android:textColor="#999"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toTopOf="@+id/button_history"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout2" />
+
+    <ImageView
+        android:id="@+id/img_big"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#bb222222"
+        android:elevation="5dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>
