@@ -8,13 +8,14 @@ import io.realm.Sort
 import kotlinx.android.synthetic.main.activity_history.*
 
 class HistoryActivity : AppCompatActivity() {
+    lateinit var realm: Realm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history)
 
         Realm.init(this)
-        val realm = Realm.getDefaultInstance()
+        realm = Realm.getDefaultInstance()
 
         val items = ArrayList<ImageBD>()
         val allImages = realm.where(ImageBD::class.java).sort("date", Sort.DESCENDING).findAll()
@@ -24,5 +25,10 @@ class HistoryActivity : AppCompatActivity() {
 
         grid_images_history.adapter = GridHistoryAdapter(this@HistoryActivity, items)
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
     }
 }

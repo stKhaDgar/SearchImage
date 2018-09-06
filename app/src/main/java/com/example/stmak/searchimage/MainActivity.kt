@@ -47,7 +47,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         Realm.init(this)
-//        val config = RealmConfiguration.Builder().name("image.realm").build()
         realm = Realm.getDefaultInstance()
 
     }
@@ -138,19 +137,34 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun writeToBD(image: Image, id: String, date: String){
-        realm.executeTransactionAsync({ bgRealm ->
-            val img = bgRealm.createObject(ImageBD::class.java, id)
-            img.date = date
-            img.thumbUrl = image.thumbUrl
-            img.smallUrl = image.smallUrl
-            img.word = et_search.text.toString()
-        }, {
-            // Transaction was a success.
-            Log.e("Database", "Data Inserted")
-        }, { error ->
-            // Transaction failed and was automatically canceled.
-            Log.e("Database", error.message)
-        })
+
+        val item = realm.where(ImageBD::class.java).equalTo("word", et_search.text.toString()).findFirst()
+
+        if(item == null){
+            realm.executeTransactionAsync({ bgRealm ->
+
+                val img = bgRealm.createObject(ImageBD::class.java, id)
+                img.date = date
+                img.thumbUrl = image.thumbUrl
+                img.smallUrl = image.smallUrl
+                img.word = et_search.text.toString()
+            }, {
+                // Transaction was a success.
+                Log.e("Database", "Data Inserted")
+            }, { error ->
+                // Transaction failed and was automatically canceled.
+                Log.e("Database", error.message)
+            })
+        }
+        else {
+            realm.beginTransaction()
+            item.date = date
+            item.thumbUrl = image.thumbUrl
+            item.smallUrl = image.smallUrl
+            realm.commitTransaction()
+        }
+
+
     }
 
     override fun onDestroy() {
