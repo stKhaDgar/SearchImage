@@ -10,7 +10,7 @@
         android:id="@+id/textView2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="История"
+        android:text="@string/history_text"
         android:textAlignment="center"
         android:padding="10dp"
         android:textAllCaps="true"

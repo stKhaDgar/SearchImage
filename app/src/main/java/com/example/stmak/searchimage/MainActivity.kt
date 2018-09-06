@@ -35,20 +35,8 @@ class MainActivity : AppCompatActivity() {
 
         onClickListener()
 
-        // Увеличение картинки по тапу. Так же стоит заметить, что из нашего массива мы достаем вариант картинки с
-        // лучшим качеством.
-        // P.S. Для подгрузки изображений из интернета я возспользовался библиотекой
-        // Picasso, так как она довольно проста в использовании, а данное задание не требует чего-то, с чем
-        // мы она не справилась
-        grid_images_history.setOnItemClickListener { _, _, position, _ ->
-            img_big.visibility = View.VISIBLE
-            Picasso.with(this).load(items[position].smallUrl).into(img_big)
-            grid_images_history.isEnabled = false
-        }
-
         Realm.init(this)
         realm = Realm.getDefaultInstance()
-
     }
 
     // Вынес обработчики событий по нажатию в отдельную функцию для компактности и наглядности кода
@@ -62,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         // "Сворачиваем" нашу большую картинку и таким образом возвращаемся на поиск
         // P.S. "блокировка" приложения позади увеличинной картинки происходит за счёт обычного отключения
         // нашего grid_images. Не совсем верный подход, но для данной ситуации вполне подходит такой метод
-        // в связи с упрощением кода и не нужной ресурсозатратности, как если бы я сделал это иначе
+        // в связи с упрощением кода и избежанием не нужной ресурсозатратности, как если бы я сделал это иначе
         img_big.setOnClickListener {
             grid_images_history.isEnabled = true
             img_big.visibility = View.INVISIBLE
@@ -78,8 +66,20 @@ class MainActivity : AppCompatActivity() {
             false
         })
 
+        // Переходим на страницу истории поиска
         button_history.setOnClickListener {
             startActivity(Intent(this, HistoryActivity::class.java))
+        }
+
+        // Увеличение картинки по тапу. Так же стоит заметить, что из нашего массива мы достаем вариант картинки с
+        // лучшим качеством.
+        // P.S. Для подгрузки изображений из интернета я воспользовался библиотекой
+        // Picasso, так как она довольно проста в использовании, а данное задание не требует чего-то, с чем
+        // бы она не справилась
+        grid_images_history.setOnItemClickListener { _, _, position, _ ->
+            img_big.visibility = View.VISIBLE
+            Picasso.with(this).load(items[position].smallUrl).into(img_big)
+            grid_images_history.isEnabled = false
         }
     }
 
@@ -117,16 +117,18 @@ class MainActivity : AppCompatActivity() {
                         // Мы просто передаем в адаптер то, что нам нужно, а там в зависимости от позиции элемента в grid-е
                         // подставляем соответсвующую картинку из массива. Такой способ мне показался более эффективным
                         for(i in 0..19) {
-                            if (i == 0) {
-                                writeToBD(Image(response.getJSONArray("results").getJSONObject(i).getJSONObject("urls").getString("thumb"),
-                                        response.getJSONArray("results").getJSONObject(i).getJSONObject("urls").getString("small")),
-                                        response.getJSONArray("results").getJSONObject(i).getString("id"),
-                                        System.currentTimeMillis().toString())
-                            }
                             items.add(items.size, Image(response.getJSONArray("results").getJSONObject(i).getJSONObject("urls").getString("thumb"),
                                     response.getJSONArray("results").getJSONObject(i).getJSONObject("urls").getString("small")))
 
                         }
+
+                        // Как было указано в тех задании, в базу данных необходимо записать текст поиска и первое изображение
+                        // результата поиска, что и происходит при помощи данного участка кода
+                        writeToBD(Image(response.getJSONArray("results").getJSONObject(0).getJSONObject("urls").getString("thumb"),
+                                response.getJSONArray("results").getJSONObject(0).getJSONObject("urls").getString("small")),
+                                response.getJSONArray("results").getJSONObject(0).getString("id"),
+                                System.currentTimeMillis().toString())
+
                         grid_images_history.adapter = GridMainAdapter(this@MainActivity, items)
                     }
 
@@ -136,10 +138,13 @@ class MainActivity : AppCompatActivity() {
                 })
     }
 
+    // Функция записи необходимых данных в БД
     private fun writeToBD(image: Image, id: String, date: String){
 
+        // Данная переменная служит указателем на то, есть ли в нашей базе уже подобный запрос...
         val item = realm.where(ImageBD::class.java).equalTo("word", et_search.text.toString()).findFirst()
 
+        // ...если нет (null), то мы соответственно производим вставку полученных данных в базу...
         if(item == null){
             realm.executeTransactionAsync({ bgRealm ->
 
@@ -156,6 +161,8 @@ class MainActivity : AppCompatActivity() {
                 Log.e("Database", error.message)
             })
         }
+        // ...а если подобная запись уже существует, мы просто делаем ей апдейт по времени, чтобы при сортировке
+        // она находилась выше, чем была
         else {
             realm.beginTransaction()
             item.date = date

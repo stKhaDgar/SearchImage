@@ -2,7 +2,8 @@
     <string name="app_name">SearchImage</string>
     <string name="search_txt">Поиск</string>
     <string name="find_text">Найти</string>
-    <string name="history_text">История поиска</string>
+    <string name="history_bt">История поиска</string>
     <string name="content_description">content description</string>
     <string name="use_search_text">Воспользуйтесь поиском :)</string>
+    <string name="history_text">История</string>
 </resources>
