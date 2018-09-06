@@ -163,8 +163,6 @@ class MainActivity : AppCompatActivity() {
             item.smallUrl = image.smallUrl
             realm.commitTransaction()
         }
-
-
     }
 
     override fun onDestroy() {
