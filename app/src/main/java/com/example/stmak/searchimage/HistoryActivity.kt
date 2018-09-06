@@ -17,6 +17,8 @@ class HistoryActivity : AppCompatActivity() {
         Realm.init(this)
         realm = Realm.getDefaultInstance()
 
+        // В этом участке кода мы просто считываем все находящиеся в базе данных первые изображения результатов поиска
+        // и записываем их в массив, который далее используем в адаптере сетки
         val items = ArrayList<ImageBD>()
         val allImages = realm.where(ImageBD::class.java).sort("date", Sort.DESCENDING).findAll()
         allImages.forEach { image ->

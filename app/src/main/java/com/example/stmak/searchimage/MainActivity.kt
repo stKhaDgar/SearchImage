@@ -15,6 +15,7 @@ import android.widget.TextView
 import android.app.Activity
 import android.content.Intent
 import android.util.Log
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import com.example.stmak.searchimage.model.ImageBD
 import io.realm.Realm
@@ -37,6 +38,8 @@ class MainActivity : AppCompatActivity() {
 
         Realm.init(this)
         realm = Realm.getDefaultInstance()
+
+        this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     // Вынес обработчики событий по нажатию в отдельную функцию для компактности и наглядности кода
