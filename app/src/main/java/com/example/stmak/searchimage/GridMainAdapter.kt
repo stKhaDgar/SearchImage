@@ -30,7 +30,7 @@ class GridMainAdapter(private val mContext: Context, private val items: ArrayLis
         if (convertView == null)
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_grid_main, null)
 
-        val img = convertView!!.findViewById(R.id.item_img) as ImageView
+        val img: ImageView? = convertView!!.findViewById(R.id.item_img) as? ImageView
         val urlImg = items[position]
 
         // Именно здесь происходит то, что я описывал в MainActivity.kt . Выше мы вытянули нашу картинку с различными
