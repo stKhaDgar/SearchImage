@@ -32,12 +32,12 @@ class GridHistoryAdapter(private val mContext: Context, private val items: Array
         if (convertView == null)
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_grid_history, null)
 
-        val img = convertView!!.findViewById(R.id.item_img_history) as ImageView
-        val txtWork = convertView!!.findViewById(R.id.word_use) as TextView
+        val img: ImageView? = convertView!!.findViewById(R.id.item_img_history) as? ImageView
+        val txtWork: TextView? = convertView.findViewById(R.id.word_use) as? TextView
         val item = items[position]
 
         Picasso.with(mContext).load(item.thumbUrl).into(img)
-        txtWork.text = item.word
+        txtWork?.text = item.word
 
         return convertView
     }
