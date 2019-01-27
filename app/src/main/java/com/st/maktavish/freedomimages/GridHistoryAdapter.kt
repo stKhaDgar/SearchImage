@@ -1,4 +1,4 @@
-package com.example.stmak.searchimage
+package com.st.maktavish.freedomimages
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.widget.*
-import com.example.stmak.searchimage.model.ImageBD
+import com.st.maktavish.freedomimages.model.ImageBD
 import com.squareup.picasso.Picasso
 
 @Suppress("NAME_SHADOWING")

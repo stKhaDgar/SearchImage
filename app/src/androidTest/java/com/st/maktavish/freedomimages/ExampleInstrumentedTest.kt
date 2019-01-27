@@ -1,4 +1,4 @@
-package com.example.stmak.searchimage
+package com.st.maktavish.freedomimages
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

@@ -24,7 +24,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.stmak.searchimage"
-        minSdkVersion 21
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"

@@ -1,4 +1,4 @@
-package com.example.stmak.searchimage
+package com.st.maktavish.freedomimages
 
 import android.annotation.SuppressLint
 import android.content.Context

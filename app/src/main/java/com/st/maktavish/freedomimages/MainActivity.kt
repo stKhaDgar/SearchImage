@@ -1,4 +1,4 @@
-package com.example.stmak.searchimage
+package com.st.maktavish.freedomimages
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -18,7 +18,7 @@ import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import com.example.stmak.searchimage.model.ImageBD
+import com.st.maktavish.freedomimages.model.ImageBD
 import io.realm.Realm
 import java.util.*
 

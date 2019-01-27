@@ -1,4 +1,4 @@
-package com.example.stmak.searchimage.model
+package com.st.maktavish.freedomimages.model
 
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
