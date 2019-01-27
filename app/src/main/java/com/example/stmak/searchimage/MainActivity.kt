@@ -15,6 +15,7 @@ import android.widget.TextView
 import android.app.Activity
 import android.content.Intent
 import android.util.Log
+import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import com.example.stmak.searchimage.model.ImageBD
@@ -29,6 +30,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_main)
 
         AndroidNetworking.initialize(applicationContext)

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Freedom Images</string>
+    <string name="app_name">FreeImages</string>
     <string name="search_txt">Поиск</string>
     <string name="find_text">Найти</string>
     <string name="history_bt">История поиска</string>
