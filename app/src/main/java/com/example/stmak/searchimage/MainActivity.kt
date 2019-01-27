@@ -21,12 +21,11 @@ import com.example.stmak.searchimage.model.ImageBD
 import io.realm.Realm
 import java.util.*
 
-
 class MainActivity : AppCompatActivity() {
     // Массив для наших картинок различного размера (маленькие и средние)
     val items = ArrayList<Image>()
 
-    lateinit var realm: Realm
+    private lateinit var realm: Realm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         Realm.init(this)
         realm = Realm.getDefaultInstance()
 
-        this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
     }
 
     // Вынес обработчики событий по нажатию в отдельную функцию для компактности и наглядности кода
@@ -109,7 +108,8 @@ class MainActivity : AppCompatActivity() {
                         // то на экране появляется соответствующая надпись, а дальнейшее выполнение кода прерывается
                         // командой 'return'
                         if(response.getString("total") == "0") {
-                            use_search_tw.text = "К сожалению нам не удалось ничего найти на запрос: \"$word\""
+                            val str = "К сожалению нам не удалось ничего найти на запрос: \"$word\""
+                            use_search_tw.text = str
                             use_search_tw.visibility = View.VISIBLE
                             return
                         }

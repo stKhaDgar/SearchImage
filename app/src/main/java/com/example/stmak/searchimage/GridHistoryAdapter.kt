@@ -8,8 +8,6 @@ import android.view.LayoutInflater
 import android.widget.*
 import com.example.stmak.searchimage.model.ImageBD
 import com.squareup.picasso.Picasso
-import org.w3c.dom.Text
-
 
 @Suppress("NAME_SHADOWING")
 class GridHistoryAdapter(private val mContext: Context, private val items: ArrayList<ImageBD>) : BaseAdapter() {
